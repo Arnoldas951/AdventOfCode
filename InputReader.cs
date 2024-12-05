@@ -21,5 +21,18 @@ namespace AOC
             List<string> listOfStrings = File.ReadLines(input).ToList();
             return listOfStrings;
         }
+
+        public static Dictionary<string, string> ReadToDictionay(string splitBy)
+        {
+            Dictionary<string,string> dictionary = new Dictionary<string,string>();
+            var list = ReadToList();
+            list.ForEach(item =>
+            {
+                var splitItem = item.Split(splitBy);
+                dictionary.Add(splitItem[0], splitItem[1]);
+            });
+
+            return dictionary;
+        }
     }
 }
