@@ -5,6 +5,7 @@ using Day3 = AOC._2024.Day3;
 using Day4 = AOC._2024.Day4;
 using Day5 = AOC._2024.Day5;
 using Day6 = AOC._2024.Day6;
+using Day7 = AOC._2024.Day7;
 
 
 //Day1();
@@ -49,10 +50,18 @@ void Day5()
     Console.WriteLine(day5.Solution2(InputReader.ReadToList()));
 }
 
-Day6();
+//Day6();
 void Day6()
 {
     Day6.Solution day6 = new Day6.Solution();
     //Console.WriteLine(day6.Solution1(InputReader.ReadToList().ToArray()));
     Console.WriteLine(day6.Solution2(InputReader.ReadToList().ToArray()));
+}
+
+Day7();
+void Day7()
+{
+    Day7.Solution day7 = new Day7.Solution();
+    //Console.WriteLine(day7.Solution1(InputReader.ReadToList().ToArray()));
+    Console.WriteLine(day7.Solution2(InputReader.ReadToList().ToArray()));
 }
