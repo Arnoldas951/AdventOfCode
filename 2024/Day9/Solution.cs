@@ -87,8 +87,19 @@ namespace AOC._2024.Day9
         public List<string> FillString2(char c, List<string> fragment, string id)
         {
             int i = c - '0';
-                fragment.Add(i+","+id);
-            return fragment;
+            if (id != ".")
+            {
+                fragment.Add(i + "," + id);
+            }
+            else 
+            {
+                while (i > 0) 
+                {
+                    fragment.Add(id);
+                        i--;
+                }
+            }
+                return fragment;
         }
 
         public long Solution2(string input) 
@@ -112,40 +123,61 @@ namespace AOC._2024.Day9
                 index++;
             }
 
-            int r = chars.Count - 1;
-            int l = 0;
-            while (l <= r)
+            for (int i = chars.Count - 1; i >= 0; i--)
             {
-                if (l % 2 != 0)
+                if (!chars[i].Contains("."))
                 {
-                    string left = chars[l];
-                    var splitLeft = left.Split(',');
-                    int lastElement = chars.Count() - 1;
-                    int spacesToFill = int.Parse(splitLeft[0]);
-                    while (lastElement > l && spacesToFill != 0)
+                    var fileToMove = chars[i];
+                    var split = fileToMove.Split(',');
+                    int length = int.Parse(split[0]);
+                    string fileId = split[1];
+                    int spaceRequired = 0;
+                    for(int j = 0; j < i; j++) 
                     {
-                        if (lastElement % 2 != 0)
+                        spaceRequired = 0;
+                        if (chars[j]  == ".")
                         {
-                            lastElement--;
-                            continue;
-                        }
-                        else
-                        {
-                            string right = chars[lastElement];
-                            var splitRight = right.Split(',');
-                            int spaceToTake = int.Parse(splitRight[0]);
-                            if (splitRight[1] != "." && (spaceToTake <= spacesToFill))
+                            int jIndex = j;
+                            while (chars[jIndex++] == ".")
                             {
-                                chars[l] = right;
-                                chars[lastElement] = left;
-                                sum += int.Parse(splitRight[1]) * l;
-                                spacesToFill = spacesToFill - spaceToTake;
+                                spaceRequired++;
+                            }
+                            if (spaceRequired == length || spaceRequired > length)
+                            {
+                                chars[j] = fileToMove;
+                                chars[i] = length + ",.";
+                                chars.RemoveRange(j + 1, length - 1);
+                                i = i - (length -1) +1;
+                                break;
                             }
                         }
-                        lastElement--;
                     }
                 }
-                l++;
+            }
+            int counter = 0;
+            foreach(var item in chars)
+            {
+                if (item != ".")
+                {
+                    var split = item.Split(',');
+                    int length = int.Parse(split[0]);
+                    int tempCount = counter;
+                    if (split[1] == ".")
+                    {
+                        counter = counter + length;
+                        continue;
+                    }
+                    
+                    int fileId = int.Parse(split[1]);
+                    
+                    while(counter < tempCount + length)
+                    {
+                        sum += fileId * counter;
+                        counter++;
+                    }
+                    
+                }
+                else {  counter++; }
             }
 
             return sum;
