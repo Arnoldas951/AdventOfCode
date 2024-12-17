@@ -187,23 +187,26 @@ namespace AOC._2024.Day15
         }
 
         private char[,] globalMap;
-        public int Solution2(List<string> input)
+        public long Solution2(List<string> input)
         {
-            int sum = 0;
+            long sum = 0;
             char[,] map = new char[input[0].Length * 2, input.Count];
-            
-            string directions = input[input.Count - 1];
+            int lastIndex = 0;
+            string directions = string.Empty;
             Point startingPosition = new Point();
             for (int i = 0; i < input.Count; i++)
             {
                 if (input[i] == "")
+                {
+                    lastIndex = i;
                     break;
+                }
 
                 for (int j = 0; j < input[i].Length; j++)
                 {
                     if (input[i][j] == '@')
                     {
-                        startingPosition.X = j*2;
+                        startingPosition.X = j * 2;
                         startingPosition.Y = i;
                         map[j * 2, i] = '@';
                         map[j * 2 + 1, i] = '.';
@@ -232,6 +235,11 @@ namespace AOC._2024.Day15
                     }
                 }
             }
+
+            for(int i = lastIndex; i < input.Count; i++)
+            {
+                directions += input[i];
+            }
             globalMap = map;
             for (int i = 0; i < globalMap.GetLength(1); i++)
             {
@@ -242,11 +250,11 @@ namespace AOC._2024.Day15
                 Console.WriteLine();
             }
 
-
             foreach (char c in directions)
             {
-                Console.WriteLine(startingPosition);
                 startingPosition = canMove2(c, startingPosition);
+
+                Console.WriteLine(startingPosition + " " + c);
                 for (int i = 0; i < globalMap.GetLength(1); i++)
                 {
                     for (int j = 0; j < globalMap.GetLength(0); j++)
@@ -257,14 +265,22 @@ namespace AOC._2024.Day15
                 }
             }
 
-            
-
-            for (int i = 0; i < map.GetLength(0); i++)
+            for (int i = 0; i < globalMap.GetLength(1); i++)
             {
-                for (int j = 0; j < map.GetLength(1); j++)
+                for (int j = 0; j < globalMap.GetLength(0); j++)
                 {
-                    if (map[i, j] == '[')
-                        sum += 100 * i + j;
+                    Console.Write(globalMap[j, i]);
+                }
+                Console.WriteLine();
+            }
+
+
+            for (int i = 0; i < globalMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < globalMap.GetLength(1); j++)
+                {
+                    if (globalMap[i, j] == '[')
+                        sum += 100 * j + i;
                 }
             }
 
@@ -280,15 +296,15 @@ namespace AOC._2024.Day15
                     {
                         startingPos.Y -= 1;
                         globalMap[startingPos.X, startingPos.Y] = '@';
-                        globalMap[startingPos.X, startingPos.Y+1] = '.';
+                        globalMap[startingPos.X, startingPos.Y + 1] = '.';
                     }
-                        break;
+                    break;
                 case 'v':
                     if (canMoveSquares(direction, startingPos))
                     {
                         startingPos.Y += 1;
                         globalMap[startingPos.X, startingPos.Y] = '@';
-                        globalMap[startingPos.X, startingPos.Y-1] = '.';
+                        globalMap[startingPos.X, startingPos.Y - 1] = '.';
                     }
                     break;
                 case '>':
@@ -304,7 +320,7 @@ namespace AOC._2024.Day15
                     {
                         startingPos.X -= 1;
                         globalMap[startingPos.X, startingPos.Y] = '@';
-                        globalMap[startingPos.X+1, startingPos.Y] = '.';
+                        globalMap[startingPos.X + 1, startingPos.Y] = '.';
                     }
                     break;
             }
@@ -312,7 +328,7 @@ namespace AOC._2024.Day15
             return startingPos;
         }
 
-        private bool canMoveSquares(char dir, Point startingPos)
+        private bool canMoveSquares(char dir, Point startingPos, char? prev = null)
         {
             Point oldPos = startingPos;
             char currentItem = globalMap[startingPos.X, startingPos.Y];
@@ -322,6 +338,17 @@ namespace AOC._2024.Day15
                     char nextItemUp = globalMap[startingPos.X, startingPos.Y - 1];
                     if (nextItemUp != '#')
                     {
+                        if (prev == '[' && nextItemUp == '.')
+                        {
+                            if (globalMap[startingPos.X + 1, startingPos.Y - 1] == '.')
+                                return true;
+                        }
+
+                        if (prev == ']' && nextItemUp == '.')
+                        {
+                            if (globalMap[startingPos.X - 1, startingPos.Y - 1] == '.')
+                                return true;
+                        }
                         if (nextItemUp == '.')
                         {
                             return true;
@@ -329,81 +356,85 @@ namespace AOC._2024.Day15
                         else
                         {
                             startingPos.Y -= 1;
-                            if (canMoveSquares(dir, startingPos))
+                            if (nextItemUp == '[')
                             {
-                                if (globalMap[startingPos.X, startingPos.Y] == '[')
+
+                                if (canMoveSquares(dir, startingPos, nextItemUp) && canMoveSquares(dir, new Point(startingPos.X + 1, startingPos.Y), ']'))
                                 {
-                                    globalMap[startingPos.X, startingPos.Y-1] = '[';
+                                    globalMap[startingPos.X, startingPos.Y - 1] = '[';
                                     globalMap[startingPos.X + 1, startingPos.Y - 1] = ']';
                                     globalMap[startingPos.X, startingPos.Y] = '.';
                                     globalMap[startingPos.X + 1, startingPos.Y] = '.';
-                                    //map[oldPos.X, oldPos.Y] = '.';
-                                    //map[oldPos.X+1, oldPos.Y] = '.';
-                                    //map[]
+
+                                    return true;
                                 }
-                                else
+                            }
+                            else
+                            {
+                                if (canMoveSquares(dir, startingPos, nextItemUp) && canMoveSquares(dir, new Point(startingPos.X - 1, startingPos.Y), '['))
                                 {
                                     globalMap[startingPos.X, startingPos.Y - 1] = ']';
                                     globalMap[startingPos.X - 1, startingPos.Y - 1] = '[';
                                     globalMap[startingPos.X, startingPos.Y] = '.';
                                     globalMap[startingPos.X - 1, startingPos.Y] = '.';
+                                    return true;
                                 }
-                                return true;
                             }
                         }
+                        //return false;
                     }
                     return false;
                 case 'v':
                     char nextItemDown = globalMap[startingPos.X, startingPos.Y + 1];
-                    char? nextItemDown2 = null;
-                    string combo = "";
-                    if (nextItemDown == '[')
-                    {
-                        nextItemDown2 = globalMap[startingPos.X + 1, startingPos.Y + 1];
-                        combo = nextItemDown.ToString() + nextItemDown2.ToString();
-                    }
-                    if (nextItemDown == ']')
-                    {
-                        nextItemDown2 = globalMap[startingPos.X - 1, startingPos.Y + 1];
-                        combo = nextItemDown2.ToString() + nextItemDown.ToString();
-                    }
+
 
                     if (nextItemDown != '#')
                     {
-                        if (nextItemDown == '.' )
+                        if (prev == '[' && nextItemDown == '.')
+                        {
+                            if (globalMap[startingPos.X + 1, startingPos.Y + 1] == '.')
+                                return true;
+                        }
+
+                        if (prev == ']' && nextItemDown == '.')
+                        {
+                            if (globalMap[startingPos.X - 1, startingPos.Y + 1] == '.')
+                                return true;
+                        }
+                        if (nextItemDown == '.')
                         {
                             return true;
                         }
                         else
                         {
                             startingPos.Y += 1;
-                            if (canMoveSquares(dir, startingPos) && (combo == "[]" || combo == ""))
+                            if (nextItemDown == '[')
                             {
-                                if (globalMap[startingPos.X, startingPos.Y] == '[')
+
+                                if (canMoveSquares(dir, startingPos, nextItemDown) && canMoveSquares(dir, new Point(startingPos.X + 1, startingPos.Y), ']'))
                                 {
                                     globalMap[startingPos.X, startingPos.Y + 1] = '[';
                                     globalMap[startingPos.X + 1, startingPos.Y + 1] = ']';
                                     globalMap[startingPos.X, startingPos.Y] = '.';
                                     globalMap[startingPos.X + 1, startingPos.Y] = '.';
-                                    //globalMap[startingPos.X, startingPos.Y] = '[';
-                                    //globalMap[startingPos.X + 1, startingPos.Y] = ']';
-                                    //globalMap[oldPos.X, oldPos.Y] = '.';
-                                    //globalMap[oldPos.X + 1, oldPos.Y] = '.';
+
+                                    return true;
                                 }
-                                else
+                            }
+                            else
+                            {
+                                if (canMoveSquares(dir, startingPos, nextItemDown) && canMoveSquares(dir, new Point(startingPos.X - 1, startingPos.Y), '['))
                                 {
                                     globalMap[startingPos.X, startingPos.Y + 1] = ']';
                                     globalMap[startingPos.X - 1, startingPos.Y + 1] = '[';
                                     globalMap[startingPos.X, startingPos.Y] = '.';
                                     globalMap[startingPos.X - 1, startingPos.Y] = '.';
+                                    return true;
                                 }
-                                //map[oldPos.X, oldPos.Y + 1] = '[';
-                                //map[oldPos.X, oldPos.Y + 2] = ']';
-                                //map[oldPos.X, oldPos.Y] = '.';
-                                return true;
                             }
-                            return false;
                         }
+                        //canPush = false;
+                        //return false;
                     }
                     return false;
                 case '>':
@@ -440,7 +471,7 @@ namespace AOC._2024.Day15
                             startingPos.X -= 1;
                             if (canMoveSquares(dir, startingPos))
                             {
-                                globalMap[startingPos.X-1, startingPos.Y] = globalMap[startingPos.X, startingPos.Y];
+                                globalMap[startingPos.X - 1, startingPos.Y] = globalMap[startingPos.X, startingPos.Y];
                                 globalMap[startingPos.X, startingPos.Y] = '.';
                                 return true;
                             }
