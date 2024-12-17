@@ -13,8 +13,11 @@ namespace AOC._2024.Day8
     public class Solution
     {
         private Dictionary<char, List<Point>> pairs = new Dictionary<char, List<Point>>();
+        private List<Point> antiNodes = new List<Point>();
         public long Solution1(string[] input)
         {
+            int height = input.Length;
+            int width = input[0].Length;
             for (int i = 0; i < input.Length; i++)
             {
                 var line = input[i];
@@ -34,16 +37,20 @@ namespace AOC._2024.Day8
                 }
             }
 
-            foreach(var pair in pairs) 
+            foreach (var pair in pairs)
             {
-                var test = pair.Value;
-                for(int i = 0; i < test.Count-1; i++)
+                var values = pair.Value;
+                for (int i = 0; i < values.Count; i++)
                 {
-                    Point difference = new Point(test[i+1].X - test[i].X, test[i+1].Y - test[i].Y);
+                    for (int j = i + 1; j < values.Count; j++)
+                    {
+                        antiNodes.Add(new Point(2 * values[i].X - values[j].X, 2 * values[i].Y - values[j].Y));
+                        antiNodes.Add(new Point(2 * values[j].X - values[i].X, 2 * values[j].Y - values[i].Y));
+                    }
                 }
             }
-            
-            return 0;  
+
+            return antiNodes.Where(f => f.X >= 0 && f.X < height && f.Y >= 0 && f.Y < width).Distinct().Count();
         }
 
         public long Solution2(string[] input)
