@@ -74,7 +74,7 @@ void Day7()
     Console.WriteLine(day7.Solution2(InputReader.ReadToList().ToArray()));
 }
 
-Day8();
+//Day8();
 void Day8()
 {
     Day8.Solution day8 = new Day8.Solution();
@@ -123,13 +123,13 @@ void Day13()
     Console.WriteLine(day13.Solution2(InputReader.ReadToList()));
 }
 
-//Day14();
-//void Day14()
-//{
-//    Day13.Solution day13 = new Day13.Solution();
-//    //Console.WriteLine(day13.Solution1(InputReader.ReadToList()));
-//    Console.WriteLine(day13.Solution2(InputReader.ReadToList()));
-//}
+Day14();
+void Day14()
+{
+    Day14.Solution day14 = new Day14.Solution();
+    //Console.WriteLine(day14.Solution1(InputReader.ReadToList()));
+    Console.WriteLine(day14.Solution2(InputReader.ReadToList()));
+}
 
 //Day15();
 void Day15()
