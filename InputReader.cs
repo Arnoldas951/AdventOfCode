@@ -8,17 +8,17 @@ namespace AOC
 {
     public class InputReader
     {
-        private static string demoInput = "D:\\AOC\\Input\\DemoInput.txt";
-        private static string input = "D:\\AOC\\Input\\Input.txt";
+        private static string demoInput = "F:\\AOC\\AdventOfCode\\Input\\DemoInput.txt";
+        private static string input = "F:\\AOC\\AdventOfCode\\Input\\Input.txt";
         public static string Read() 
         {
-            StreamReader sr = new StreamReader(input);
+            StreamReader sr = new StreamReader(demoInput);
             return sr.ReadToEnd();
         }
 
         public static List<string> ReadToList() 
         {
-            List<string> listOfStrings = File.ReadLines(input).ToList();
+            List<string> listOfStrings = File.ReadLines(demoInput).ToList();
             return listOfStrings;
         }
 
