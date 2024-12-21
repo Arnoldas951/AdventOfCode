@@ -115,6 +115,15 @@ namespace AOC._2024.Day18
 
             int lowest = 0;
             int highest = input.Count();
+
+            //linear search
+            //for(int i = 0; i < input.Count; i++)
+            //{
+            //    if (!CanTravel(i, input))
+            //        return input[i];
+            //}
+
+            // binary search
             while (lowest < highest)
             {
                 int middle = (lowest + highest) / 2;
@@ -151,20 +160,6 @@ namespace AOC._2024.Day18
                     grid[x, y] = '.';
                 }
             }
-
-            //for (int i = 0; i < 7; i++)
-            //{
-            //    for (int j = 0; j < 7; j++)
-            //    {
-            //        if (grid[j, i] == '\0')
-            //        {
-            //            grid[j, i] = '.';
-            //        }
-            //        Console.Write(grid[j, i]);
-            //    }
-            //    Console.WriteLine();
-            //}
-            //Console.WriteLine();
 
             Queue<Point> mapPoint = new Queue<Point>();
 
