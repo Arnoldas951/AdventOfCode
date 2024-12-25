@@ -19,6 +19,9 @@ using Day17 = AOC._2024.Day17;
 using Day18 = AOC._2024.Day18;
 using Day19 = AOC._2024.Day19;
 using Day20 = AOC._2024.Day20;
+using Day21 = AOC._2024.Day21;
+using Day22 = AOC._2024.Day22;
+using Day23 = AOC._2024.Day23;
 
 
 //Day1();
@@ -176,10 +179,34 @@ void Day19()
     Console.WriteLine(day19.Solution2(InputReader.ReadToList()));
 }
 
-Day20();
+//Day20();
 void Day20()
 {
     Day20.Solution day20 = new Day20.Solution();
     //Console.WriteLine(day20.Solution1(InputReader.ReadToList()));
     Console.WriteLine(day20.Solution2(InputReader.ReadToList()));
+}
+
+//Day21();
+//void Day21()
+//{
+//    Day20.Solution day20 = new Day20.Solution();
+//    //Console.WriteLine(day20.Solution1(InputReader.ReadToList()));
+//    Console.WriteLine(day20.Solution2(InputReader.ReadToList()));
+//}
+
+//Day22();
+//void Day22()
+//{
+//    Day20.Solution day20 = new Day20.Solution();
+//    //Console.WriteLine(day20.Solution1(InputReader.ReadToList()));
+//    Console.WriteLine(day20.Solution2(InputReader.ReadToList()));
+//}
+
+Day23();
+void Day23()
+{
+    Day23.Solution day23 = new Day23.Solution();
+    //Console.WriteLine(day23.Solution1(InputReader.ReadToList()));
+    Console.WriteLine(day23.Solution2(InputReader.ReadToList()));
 }
