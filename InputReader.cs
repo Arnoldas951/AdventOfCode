@@ -12,13 +12,13 @@ namespace AOC
         private static string input = "F:\\AOC\\AdventOfCode\\Input\\Input.txt";
         public static string Read() 
         {
-            StreamReader sr = new StreamReader(demoInput);
+            StreamReader sr = new StreamReader(input);
             return sr.ReadToEnd();
         }
 
         public static List<string> ReadToList() 
         {
-            List<string> listOfStrings = File.ReadLines(demoInput).ToList();
+            List<string> listOfStrings = File.ReadLines(input).ToList();
             return listOfStrings;
         }
 

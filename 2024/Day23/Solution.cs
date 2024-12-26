@@ -89,8 +89,7 @@ namespace AOC._2024.Day23
             }
 
 
-            var historians = pairs.Where(f => f.Key.StartsWith("t")).ToList();
-            foreach (var pair in historians)
+            foreach (var pair in pairs)
             {
                 foreach (var value in pair.Value)
                 {
@@ -105,6 +104,7 @@ namespace AOC._2024.Day23
                     }
                 }
             }
+
             return 0;
         }
     }
