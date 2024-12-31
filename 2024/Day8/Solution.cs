@@ -55,7 +55,62 @@ namespace AOC._2024.Day8
 
         public long Solution2(string[] input)
         {
-            return 0;
+            int height = input.Length;
+            int width = input[0].Length;
+            for (int i = 0; i < input.Length; i++)
+            {
+                var line = input[i];
+                for (int j = 0; j < line.Length; j++)
+                {
+                    if (input[i][j] != '.')
+                    {
+                        if (!pairs.ContainsKey(input[i][j]))
+                        {
+                            pairs.Add(input[i][j], new List<Point>() { new Point(j, i) });
+                        }
+                        else
+                        {
+                            pairs[input[i][j]].Add(new Point(j, i));
+                        }
+                    }
+                }
+            }
+
+            foreach (var pair in pairs)
+            {
+                var values = pair.Value;
+                for (int i = 0; i < values.Count; i++)
+                {
+                    for (int j = i + 1; j < values.Count; j++)
+                    {
+                        int diffX = values[j].X - values[i].X;
+                        int diffY = values[j].Y - values[i].Y;
+                        int currx = values[i].X;
+                        int curry = values[i].Y;
+                        while ((currx >= 0 && currx < width) && (curry >= 0 && curry < height))
+                        {
+                            antiNodes.Add(new(currx, curry));
+                            currx -= diffX;
+                            curry -= diffY;
+
+                        }
+
+                        currx = values[j].X;
+                        curry = values[j].Y;
+                        while ((currx >= 0 && currx < width) && (curry >= 0 && curry < height))
+                        {
+                            antiNodes.Add(new(currx, curry));
+                            currx += diffX;
+                            curry += diffY;
+
+                        }
+                        //antiNodes.Add(new Point(2 * values[i].X - values[j].X, 2 * values[i].Y - values[j].Y));
+                        //antiNodes.Add(new Point(2 * values[j].X - values[i].X, 2 * values[j].Y - values[i].Y));
+                    }
+                }
+            }
+
+            return antiNodes.Distinct().Count();
         }
     }
 }
